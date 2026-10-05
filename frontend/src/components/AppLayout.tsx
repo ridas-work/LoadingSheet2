@@ -7,19 +7,31 @@ export default function AppLayout() {
   if (loading) return <div className="page">Loading…</div>;
   if (!user) return <Navigate to="/login" replace />;
 
+  const isBatchClerk = user.role === "batch_clerk";
+  const home = isBatchClerk ? "/batches" : "/orders";
+
   return (
     <div className="app-shell">
       <header className="topbar">
         <div className="brand">
-          <Link to="/orders">Loading Sheet</Link>
+          <Link to={home}>Loading Sheet</Link>
           <span className="badge">{user.role}</span>
         </div>
         <nav>
-          <Link to="/orders">Orders</Link>
-          <Link to="/orders/new">New order</Link>
-          {user.can_market_visit ? (
-            <Link to="/market-visit">Market Visit</Link>
-          ) : null}
+          {isBatchClerk ? (
+            <>
+              <Link to="/batches">Active batches</Link>
+              <Link to="/batches/new">New batch</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/orders">Orders</Link>
+              <Link to="/orders/new">New order</Link>
+              {user.can_market_visit ? (
+                <Link to="/market-visit">Market Visit</Link>
+              ) : null}
+            </>
+          )}
         </nav>
         <div className="user-chip">
           <span>{user.first_name || user.username}</span>

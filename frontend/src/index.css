@@ -591,6 +591,157 @@ select.yn-n {
   font-weight: 700;
 }
 
+.filter-tab.disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.batch-page {
+  max-width: 1200px;
+}
+
+.batch-toolbar {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 360px;
+  margin-top: 0;
+}
+
+.batch-table {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.batch-table th {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.tag {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.tag-regular {
+  background: #eef2f7;
+  color: #344054;
+}
+
+.tag-sample {
+  background: #f4ebff;
+  color: #6941c6;
+}
+
+.tag-available {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.tag-bad {
+  background: #fef3f2;
+  color: #b42318;
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.batch-form-page {
+  max-width: 720px;
+}
+
+.batch-form label {
+  display: block;
+  margin-bottom: 0.95rem;
+  font-weight: 600;
+}
+
+.batch-form textarea {
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  resize: vertical;
+}
+
+.purpose-toggle,
+.unit-toggle,
+.qc-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.purpose-toggle button,
+.unit-toggle button,
+.qc-toggle button {
+  border: 1px solid var(--border);
+  background: #f3f4f6;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.purpose-toggle button.active,
+.unit-toggle button.active,
+.qc-toggle button.active {
+  background: #fff;
+  border-color: #98a2b3;
+  box-shadow: var(--shadow);
+}
+
+.qc-toggle button.bad.active {
+  background: #fef3f2;
+  border-color: #fecdca;
+  color: #b42318;
+}
+
+.qty-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.35rem;
+}
+
+.qty-row input {
+  margin-top: 0;
+}
+
+.unit-toggle {
+  margin-bottom: 0;
+  min-width: 7.5rem;
+}
+
+.unit-toggle button {
+  padding: 0.65rem 0.5rem;
+}
+
+.qc-box {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: #fafbfd;
+}
+
+.qc-box h3 {
+  margin: 0 0 0.35rem;
+}
+
 @media (max-width: 720px) {
   .topbar {
     flex-wrap: wrap;

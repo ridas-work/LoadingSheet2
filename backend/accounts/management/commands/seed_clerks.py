@@ -5,27 +5,28 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    help = "Seed order clerk users for the shared portal"
+    help = "Seed portal users (order clerks + Esha batch clerk)"
 
     def handle(self, *args, **options):
-        # (username, first_name, password, can_market_visit)
-        clerks = [
-            ("ahtisham", "Ahtisham", "Clerk123!", True),
-            ("aslam", "Aslam", "Clerk123!", True),
-            ("nouman", "Nouman", "Clerk123!", False),
-            ("javeria", "Javeria", "Clerk123!", False),
+        # (username, first_name, password, role, can_market_visit)
+        users = [
+            ("ahtisham", "Ahtisham", "Clerk123!", User.Role.ORDER_CLERK, True),
+            ("aslam", "Aslam", "Clerk123!", User.Role.ORDER_CLERK, True),
+            ("nouman", "Nouman", "Clerk123!", User.Role.ORDER_CLERK, False),
+            ("javeria", "Javeria", "Clerk123!", User.Role.ORDER_CLERK, False),
+            ("esha", "Esha", "Clerk123!", User.Role.BATCH_CLERK, False),
         ]
-        for username, first_name, password, can_market_visit in clerks:
+        for username, first_name, password, role, can_market_visit in users:
             user, created = User.objects.get_or_create(
                 username=username,
                 defaults={
                     "first_name": first_name,
-                    "role": User.Role.ORDER_CLERK,
+                    "role": role,
                     "is_staff": False,
                     "can_market_visit": can_market_visit,
                 },
             )
-            user.role = User.Role.ORDER_CLERK
+            user.role = role
             user.first_name = first_name
             user.can_market_visit = can_market_visit
             user.set_password(password)

@@ -1,12 +1,12 @@
-# Loading Sheet — Phase 1
+# Loading Sheet
 
-Django + React + PostgreSQL order-entry portal for order clerks.
+Django + React + PostgreSQL ops portal (order clerks + Esha batches).
 
 ## Setup
 
 1. Copy `.env.example` to `.env` and set DB credentials.
    - Local smoke tests without Postgres password: `USE_SQLITE=True`
-   - PostgreSQL: `USE_SQLITE=False` and set `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`
+   - PostgreSQL: `USE_SQLITE=False` and set `DB_*`
 
 2. Backend (from repo root):
 
@@ -16,6 +16,7 @@ cd backend
 ..\.venv\Scripts\python manage.py migrate
 ..\.venv\Scripts\python manage.py seed_clerks
 ..\.venv\Scripts\python manage.py seed_catalog
+..\.venv\Scripts\python manage.py seed_batch_products
 ..\.venv\Scripts\python manage.py runserver
 ```
 
@@ -27,15 +28,15 @@ npm install
 npm run dev
 ```
 
-## Clerk logins (same portal)
+## Logins
 
-| Username | Password  | Market Visit |
-|----------|-----------|--------------|
-| ahtisham | Clerk123! | Yes |
-| aslam    | Clerk123! | Yes |
-| nouman   | Clerk123! | No |
-| javeria  | Clerk123! | No |
+| Username | Password  | Portal |
+|----------|-----------|--------|
+| ahtisham | Clerk123! | Orders + Market Visit |
+| aslam    | Clerk123! | Orders + Market Visit |
+| nouman   | Clerk123! | Orders |
+| javeria  | Clerk123! | Orders |
+| esha     | Clerk123! | Batches (Active / New) |
 
 - API: `http://127.0.0.1:8000/api`
 - App: `http://127.0.0.1:5173`
-- Each clerk only sees their own orders (and own market visits when enabled).

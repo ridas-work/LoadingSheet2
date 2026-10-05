@@ -1,4 +1,4 @@
-export type Role = "order_clerk" | "admin";
+export type Role = "order_clerk" | "batch_clerk" | "admin";
 
 export interface User {
   id: number;
@@ -173,6 +173,44 @@ export interface MarketVisitListItem {
   store_count: number;
   title: string;
   first_location: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export type BatchPurpose = "regular" | "sample";
+export type BatchQuantityUnit = "L" | "ml";
+export type BatchQCResult = "successful" | "unsuccessful";
+
+export interface BatchProduct {
+  id: number;
+  code: string;
+  name: string;
+  sort_order: number;
+}
+
+export interface Batch {
+  id: number;
+  purpose: BatchPurpose;
+  batch_number: string;
+  batch_product_id: number;
+  batch_product_name: string;
+  batch_product_code: string;
+  date: string;
+  ph: string;
+  solids: string;
+  appearance: string;
+  provider: string;
+  quantity: string;
+  quantity_unit: BatchQuantityUnit;
+  remaining_quantity: string;
+  customer_name: string;
+  qc_result: BatchQCResult;
+  comment: string;
+  is_closed: boolean;
+  is_available: boolean;
+  status_label: string;
+  created_by_username: string;
+  created_by_name: string;
   created_at: string;
   updated_at: string;
 }

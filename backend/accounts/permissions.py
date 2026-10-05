@@ -28,3 +28,14 @@ class CanMarketVisit(permissions.BasePermission):
             and request.user.is_authenticated
             and getattr(request.user, "can_market_visit", False)
         )
+
+
+class IsBatchClerkOrAdmin(permissions.BasePermission):
+    message = "Batch portal access is restricted."
+
+    def has_permission(self, request, view):
+        return bool(
+            request.user
+            and request.user.is_authenticated
+            and request.user.role in ("batch_clerk", "admin")
+        )

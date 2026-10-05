@@ -2,6 +2,10 @@ import { useState, type FormEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth";
 
+function homeForRole(role: string) {
+  return role === "batch_clerk" ? "/batches" : "/orders";
+}
+
 export default function LoginPage() {
   const { user, loading, login } = useAuth();
   const navigate = useNavigate();
@@ -10,15 +14,17 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (!loading && user) return <Navigate to="/orders" replace />;
+  if (!loading && user) {
+    return <Navigate to={homeForRole(user.role)} replace />;
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
     setSubmitting(true);
     try {
-      await login(username.trim(), password);
-      navigate("/orders");
+      const loggedIn = await login(username.trim(), password);
+      navigate(homeForRole(loggedIn.role));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
@@ -30,7 +36,7 @@ export default function LoginPage() {
     <div className="login-page">
       <form className="login-card" onSubmit={onSubmit}>
         <h1>Loading Sheet</h1>
-        <p className="muted">Order entry portal</p>
+        <p className="muted">Sign in to your portal</p>
         {error ? <div className="error-banner">{error}</div> : null}
         <label>
           Username

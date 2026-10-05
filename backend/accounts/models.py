@@ -5,6 +5,7 @@ from django.db import models
 class User(AbstractUser):
     class Role(models.TextChoices):
         ORDER_CLERK = "order_clerk", "Order Clerk"
+        BATCH_CLERK = "batch_clerk", "Batch Clerk"
         ADMIN = "admin", "Admin"
 
     role = models.CharField(

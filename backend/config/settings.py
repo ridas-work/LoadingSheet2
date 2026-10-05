@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "catalog",
     "orders",
     "market_visits",
+    "batches",
 ]
 
 MIDDLEWARE = [

@@ -118,4 +118,32 @@ export const api = {
   deleteMarketVisit(id: number) {
     return request<void>(`/market-visits/${id}/`, { method: "DELETE" });
   },
+  batchProducts() {
+    return request<import("./types").BatchProduct[]>("/batch-products/");
+  },
+  batches(params?: { purpose?: string; search?: string; status?: string }) {
+    const q = new URLSearchParams();
+    q.set("status", params?.status || "active");
+    if (params?.purpose) q.set("purpose", params.purpose);
+    if (params?.search) q.set("search", params.search);
+    return request<import("./types").Batch[]>(`/batches/?${q.toString()}`);
+  },
+  batch(id: number) {
+    return request<import("./types").Batch>(`/batches/${id}/`);
+  },
+  createBatch(payload: unknown) {
+    return request<import("./types").Batch>("/batches/", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+  updateBatch(id: number, payload: unknown) {
+    return request<import("./types").Batch>(`/batches/${id}/`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  },
+  deleteBatch(id: number) {
+    return request<void>(`/batches/${id}/`, { method: "DELETE" });
+  },
 };
