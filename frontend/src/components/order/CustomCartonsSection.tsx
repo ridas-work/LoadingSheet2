@@ -165,8 +165,8 @@ export default function CustomCartonsSection({
           <div className="product-lines">
             <h4>Products inside this carton</h4>
             <p className="help">
-              Choose from the fixed custom product list only — you cannot add new
-              product names here.
+              Custom-carton products will appear here when they are added to the
+              catalog (not on the main sheet). You cannot type new names.
             </p>
             {carton.items.map((item) => (
               <div key={item.key} className="product-line-row">

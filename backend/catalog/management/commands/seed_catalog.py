@@ -39,47 +39,6 @@ SHEET_PRODUCTS = [
     ("Rhino 750 ml B2G1", 5, "bundles", 27),
 ]
 
-# Custom-carton products only (fixed list; not on main sheet)
-CUSTOM_PRODUCTS = [
-    "GO-6",
-    "ABLUSOFT ALM 100",
-    "Anticrease",
-    "cotton leveler",
-    "GO-1",
-    "HANDWASH LOW COST",
-    "HK-1000",
-    "INNODISPERCENT",
-    "INNODISPERCENT P",
-    "INNOLEVELS (COTTON)",
-    "INNOSILK HS 48-A",
-    "INNOSILK K-51",
-    "INNOSOFT WCN",
-    "INNOSTAB",
-    "INNOWASH",
-    "INNOWET 173",
-    "INNOWET DPL",
-    "INOSILK-179",
-    "KSIL-50",
-    "LIQUID DETERGENT",
-    "LT-100",
-    "LT-101",
-    "RAC-1",
-    "RDTB",
-    "SEQ-480",
-    "SKYCRON BLACK ECO",
-    "SKYCRON BLUE SE2R",
-    "SKYCRON NAVY ECO",
-    "SKYCRON ORANGE 25",
-    "SKYCRON ORANGE 30",
-    "SKYCRON RED FB",
-    "SKYCRON RUBINE B",
-    "SKYCRON SCARLET",
-    "SKYCRON VIOLET 63",
-    "SULPHONIC ACID",
-    "SW-40",
-    "SW-403-3",
-]
-
 
 class Command(BaseCommand):
     help = "Seed catalog: approved customers, sheet products, outer boxes"
@@ -110,23 +69,9 @@ class Command(BaseCommand):
                 },
             )
 
-        custom_names = set()
-        for order, name in enumerate(CUSTOM_PRODUCTS, start=1):
-            custom_names.add(name)
-            Product.objects.update_or_create(
-                name=name,
-                defaults={
-                    "bottles_per_carton": 1,
-                    "unit_label": Product.UnitLabel.BOTTLES,
-                    "show_on_sheet": False,
-                    "is_active": True,
-                    "sort_order": 1000 + order,
-                },
-            )
-
-        official_names = sheet_names | custom_names
+        # Only sheet products stay active; former custom-carton names are deactivated
         deactivated = (
-            Product.objects.exclude(name__in=official_names)
+            Product.objects.exclude(name__in=sheet_names)
             .filter(is_active=True)
             .update(is_active=False, show_on_sheet=False)
         )
@@ -140,7 +85,7 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"Catalog seeded: {len(sheet_names)} sheet, {len(custom_names)} custom "
+                f"Catalog seeded: {len(sheet_names)} sheet products "
                 f"({deactivated} other products deactivated)."
             )
         )
