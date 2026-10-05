@@ -164,12 +164,10 @@ export default function CustomCartonsSection({
 
           <div className="product-lines">
             <h4>Products inside this carton</h4>
-            {products.length === 0 ? (
-              <p className="help">
-                Custom-carton products will appear here once they are added to the
-                catalog (separate from the main sheet list).
-              </p>
-            ) : null}
+            <p className="help">
+              Choose from the fixed custom product list only — you cannot add new
+              product names here.
+            </p>
             {carton.items.map((item) => (
               <div key={item.key} className="product-line-row">
                 <select

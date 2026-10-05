@@ -8,38 +8,76 @@ SHEET_PRODUCTS = [
     ("Brighten Laundry Detergent (pouch)(1 litre)", 20, "bottles", 1),
     ("Brighten Liquid Laundry Detergent (1 litre)", 10, "bottles", 2),
     ("Brighten bottle B2G1", 5, "bundles", 3),
-    ("Brighten pouch B2G1", 10, "bundles", 4),
-    ("Fabrito Fabric Softener (1 litre)", 10, "bottles", 5),
-    ("Fabrito Fabric Softener (pouch)(1 litre)", 20, "bottles", 6),
-    ("Fabrito bottle B2G1", 5, "bundles", 7),
-    ("Fabrito Pouch B2G1", 10, "bundles", 8),
-    ("Degrease Spray 750ml", 10, "bottles", 9),
-    ("Degrease 750 ml B2G1", 5, "bundles", 10),
-    ("Glim 750ml", 10, "bottles", 11),
-    ("Power Wash 500ml", 10, "bottles", 12),
-    ("Power Wash 1 Litre (pouch)", 20, "bottles", 13),
-    ("Power Wash 500ml B2G1", 5, "bundles", 14),
-    ("Power wash Pouch B2G1", 10, "bundles", 15),
-    ("Rhino 250ml", 20, "bottles", 16),
-    ("Rhino 500ml", 30, "bottles", 17),
-    ("Rhino 750ml", 10, "bottles", 18),
-    ("Titan 500 g", 10, "bottles", 19),
-    ("Titan 1.25 kg", 8, "bottles", 20),
-    ("Washout Multi-surface Disinfectant Floral Red", 10, "bottles", 21),
-    ("Washout Multi-surface Disinfectant Lemon Yellow", 10, "bottles", 22),
-    ("Washout Multi-surface Disinfectant Ocean Blue", 10, "bottles", 23),
-    ("Washout B2G1 (Floral + Ocean + Lemon)", 5, "bundles", 24),
+    ("Fabrito Fabric Softener (1 litre)", 10, "bottles", 4),
+    ("Fabrito Fabric Softener (pouch)(1 litre)", 20, "bottles", 5),
+    ("Fabrito bottle B2G1", 5, "bundles", 6),
+    ("Degrease Spray 750ml", 10, "bottles", 7),
+    ("Degrease 750 ml B2G1", 5, "bundles", 8),
+    ("Glim 750ml", 10, "bottles", 9),
+    ("Power Wash 500ml", 10, "bottles", 10),
+    ("Power Wash 1 Litre (pouch)", 20, "bottles", 11),
+    ("Power Wash 500ml B2G1", 5, "bundles", 12),
+    ("Rhino 250ml", 20, "bottles", 13),
+    ("Rhino 500ml", 30, "bottles", 14),
+    ("Rhino 750ml", 10, "bottles", 15),
+    ("Titan 500 g", 10, "bottles", 16),
+    ("Titan 1.25 kg", 8, "bottles", 17),
+    ("Washout Multi-surface Disinfectant Floral Red", 10, "bottles", 18),
+    ("Washout Multi-surface Disinfectant Lemon Yellow", 10, "bottles", 19),
+    ("Washout Multi-surface Disinfectant Ocean Blue", 10, "bottles", 20),
+    ("Washout B2G1 (Floral + Ocean + Lemon)", 5, "bundles", 21),
     (
         "Brighten Laundry Detergent + Fabrito Fabric Softener bundle (1 litre each)",
         5,
         "bundles",
-        25,
+        22,
     ),
-    ("Power Wash Dish Wash + Degrease Spray Bundle", 5, "bundles", 26),
-    ("Rhino 2x2 750ml", 5, "bundles", 27),
-    ("Rhino 250 ml B2G1", 10, "bundles", 28),
-    ("Rhino 500 ml B2G1", 15, "bundles", 29),
-    ("Rhino 750 ml B2G1", 5, "bundles", 30),
+    ("Power Wash Dish Wash + Degrease Spray Bundle", 5, "bundles", 23),
+    ("Rhino 2x2 750ml", 5, "bundles", 24),
+    ("Rhino 250 ml B2G1", 10, "bundles", 25),
+    ("Rhino 500 ml B2G1", 15, "bundles", 26),
+    ("Rhino 750 ml B2G1", 5, "bundles", 27),
+]
+
+# Custom-carton products only (fixed list; not on main sheet)
+CUSTOM_PRODUCTS = [
+    "GO-6",
+    "ABLUSOFT ALM 100",
+    "Anticrease",
+    "cotton leveler",
+    "GO-1",
+    "HANDWASH LOW COST",
+    "HK-1000",
+    "INNODISPERCENT",
+    "INNODISPERCENT P",
+    "INNOLEVELS (COTTON)",
+    "INNOSILK HS 48-A",
+    "INNOSILK K-51",
+    "INNOSOFT WCN",
+    "INNOSTAB",
+    "INNOWASH",
+    "INNOWET 173",
+    "INNOWET DPL",
+    "INOSILK-179",
+    "KSIL-50",
+    "LIQUID DETERGENT",
+    "LT-100",
+    "LT-101",
+    "RAC-1",
+    "RDTB",
+    "SEQ-480",
+    "SKYCRON BLACK ECO",
+    "SKYCRON BLUE SE2R",
+    "SKYCRON NAVY ECO",
+    "SKYCRON ORANGE 25",
+    "SKYCRON ORANGE 30",
+    "SKYCRON RED FB",
+    "SKYCRON RUBINE B",
+    "SKYCRON SCARLET",
+    "SKYCRON VIOLET 63",
+    "SULPHONIC ACID",
+    "SW-40",
+    "SW-403-3",
 ]
 
 
@@ -72,9 +110,23 @@ class Command(BaseCommand):
                 },
             )
 
-        # Hide any products not on the official sheet list
+        custom_names = set()
+        for order, name in enumerate(CUSTOM_PRODUCTS, start=1):
+            custom_names.add(name)
+            Product.objects.update_or_create(
+                name=name,
+                defaults={
+                    "bottles_per_carton": 1,
+                    "unit_label": Product.UnitLabel.BOTTLES,
+                    "show_on_sheet": False,
+                    "is_active": True,
+                    "sort_order": 1000 + order,
+                },
+            )
+
+        official_names = sheet_names | custom_names
         deactivated = (
-            Product.objects.exclude(name__in=sheet_names)
+            Product.objects.exclude(name__in=official_names)
             .filter(is_active=True)
             .update(is_active=False, show_on_sheet=False)
         )
@@ -88,7 +140,7 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"Catalog seeded: {len(sheet_names)} sheet products "
+                f"Catalog seeded: {len(sheet_names)} sheet, {len(custom_names)} custom "
                 f"({deactivated} other products deactivated)."
             )
         )

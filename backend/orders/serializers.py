@@ -71,6 +71,27 @@ class OrderCreateSerializer(serializers.Serializer):
                 {"products": f"Unknown or inactive product ids: {sorted(missing)}"}
             )
 
+        sheet_line_ids = {line["product_id"] for line in lines}
+        for pid in sheet_line_ids:
+            if not products[pid].show_on_sheet:
+                raise serializers.ValidationError(
+                    {
+                        "lines": f"{products[pid].name} is not a sheet product."
+                    }
+                )
+
+        for carton in custom_cartons:
+            for item in carton["items"]:
+                pid = item["product_id"]
+                if products[pid].show_on_sheet:
+                    raise serializers.ValidationError(
+                        {
+                            "custom_cartons": (
+                                f"{products[pid].name} cannot be used in custom cartons."
+                            )
+                        }
+                    )
+
         outer_ids = {c["outer_box_id"] for c in custom_cartons}
         outer_boxes = {
             o.id: o for o in OuterBox.objects.filter(id__in=outer_ids, is_active=True)
