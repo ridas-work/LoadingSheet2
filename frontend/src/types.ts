@@ -1,4 +1,4 @@
-export type Role = "order_clerk" | "batch_clerk" | "admin";
+export type Role = "order_clerk" | "batch_clerk" | "dispatch_clerk" | "admin";
 
 export interface User {
   id: number;
@@ -212,6 +212,60 @@ export interface PackagingMaterial {
   sort_order: number;
   created_at: string;
   updated_at: string;
+}
+
+export interface DispatchOrder {
+  id: number;
+  po_number: string;
+  customer_name: string;
+  city: string;
+  deadline_date: string;
+  status: string;
+  created_by_username: string;
+  total_products: number;
+  total_bottles: number;
+  created_at: string;
+}
+
+export type TripStatus = "planned" | "delivered";
+
+export interface TripOrderItem {
+  id: number;
+  order_id: number;
+  po_number: string;
+  customer_name: string;
+  city: string;
+  deadline_date: string;
+  created_by_username: string;
+  challan_no: string;
+  sort_order: number;
+}
+
+export interface Trip {
+  id: number;
+  vehicle_no: string;
+  driver_name: string;
+  helper_name: string;
+  production_incharge: string;
+  security: string;
+  default_challan_no: string;
+  status: TripStatus;
+  trip_orders: TripOrderItem[];
+  order_count: number;
+  created_by_username: string;
+  created_by_name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TripWritePayload {
+  vehicle_no: string;
+  driver_name: string;
+  helper_name: string;
+  production_incharge: string;
+  security: string;
+  default_challan_no: string;
+  orders: { order_id: number; challan_no: string }[];
 }
 
 export interface Batch {

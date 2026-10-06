@@ -186,4 +186,25 @@ export const api = {
       },
     );
   },
+  dispatchOrders() {
+    return request<import("./types").DispatchOrder[]>("/dispatch/orders/");
+  },
+  trips() {
+    return request<import("./types").Trip[]>("/dispatch/trips/");
+  },
+  trip(id: number) {
+    return request<import("./types").Trip>(`/dispatch/trips/${id}/`);
+  },
+  createTrip(payload: import("./types").TripWritePayload) {
+    return request<import("./types").Trip>("/dispatch/trips/", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+  updateTrip(id: number, payload: import("./types").TripWritePayload) {
+    return request<import("./types").Trip>(`/dispatch/trips/${id}/`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  },
 };

@@ -39,3 +39,14 @@ class IsBatchClerkOrAdmin(permissions.BasePermission):
             and request.user.is_authenticated
             and request.user.role in ("batch_clerk", "admin")
         )
+
+
+class IsDispatchClerkOrAdmin(permissions.BasePermission):
+    message = "Dispatch portal access is restricted."
+
+    def has_permission(self, request, view):
+        return bool(
+            request.user
+            and request.user.is_authenticated
+            and request.user.role in ("dispatch_clerk", "admin")
+        )

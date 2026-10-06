@@ -1,5 +1,6 @@
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../auth";
+import { homeForRole } from "../roleHome";
 
 export default function AppLayout() {
   const { user, loading, logout } = useAuth();
@@ -7,8 +8,9 @@ export default function AppLayout() {
   if (loading) return <div className="page">Loading…</div>;
   if (!user) return <Navigate to="/login" replace />;
 
+  const home = homeForRole(user.role);
   const isBatchClerk = user.role === "batch_clerk";
-  const home = isBatchClerk ? "/batches" : "/orders";
+  const isDispatchClerk = user.role === "dispatch_clerk";
 
   return (
     <div className="app-shell">
@@ -24,7 +26,14 @@ export default function AppLayout() {
               <Link to="/batches/new">New batch</Link>
               <Link to="/packaging">Packaging</Link>
             </>
-          ) : (
+          ) : null}
+          {isDispatchClerk ? (
+            <>
+              <Link to="/dispatch">Orders</Link>
+              <Link to="/dispatch/trips">Dispatch trips</Link>
+            </>
+          ) : null}
+          {!isBatchClerk && !isDispatchClerk ? (
             <>
               <Link to="/orders">Orders</Link>
               <Link to="/orders/new">New order</Link>
@@ -32,7 +41,7 @@ export default function AppLayout() {
                 <Link to="/market-visit">Market Visit</Link>
               ) : null}
             </>
-          )}
+          ) : null}
         </nav>
         <div className="user-chip">
           <span>{user.first_name || user.username}</span>

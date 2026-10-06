@@ -1,6 +1,6 @@
 # Loading Sheet
 
-Django + React + PostgreSQL ops portal (order clerks + Esha batches).
+Django + React + PostgreSQL ops portal (order clerks, Esha batches, Ali dispatch).
 
 ## Setup
 
@@ -38,6 +38,7 @@ npm run dev
 | nouman   | Clerk123! | Orders |
 | javeria  | Clerk123! | Orders |
 | esha     | Clerk123! | Batches + Packaging inventory |
+| ali      | Clerk123! | Dispatch trips & orders |
 
 - API: `http://127.0.0.1:8000/api`
 - App: `http://127.0.0.1:5173`

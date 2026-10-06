@@ -773,6 +773,91 @@ select.yn-n {
   text-decoration: underline;
 }
 
+.dispatch-page {
+  max-width: 960px;
+}
+
+.dispatch-section h2 {
+  margin: 0 0 0.35rem;
+}
+
+.dispatch-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.dispatch-order-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.85rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dispatch-order-card.selected {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 1px #1d4ed8 inset;
+  background: #f8fafc;
+}
+
+.dispatch-order-card input[type="checkbox"] {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  accent-color: #1d4ed8;
+  cursor: pointer;
+}
+
+button:disabled,
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.dispatch-order-po {
+  font-weight: 700;
+}
+
+.dispatch-order-customer {
+  margin-top: 0.1rem;
+}
+
+.dispatch-form label {
+  display: block;
+  margin-bottom: 0.85rem;
+  font-weight: 600;
+}
+
+.dispatch-check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.dispatch-check-row {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  font-weight: 500;
+}
+
+.dispatch-check-row input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.sticky-actions {
+  margin-top: 1.25rem;
+}
+
 @media (max-width: 720px) {
   .topbar {
     flex-wrap: wrap;

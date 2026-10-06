@@ -10,13 +10,16 @@ import OrdersListPage from "./pages/OrdersList";
 import BatchFormPage from "./pages/batches/BatchForm";
 import BatchListPage from "./pages/batches/BatchList";
 import PackagingInventoryPage from "./pages/packaging/PackagingInventory";
+import DispatchOrdersPage from "./pages/dispatch/DispatchOrders";
+import TripFormPage from "./pages/dispatch/TripForm";
+import TripListPage from "./pages/dispatch/TripList";
+import { homeForRole } from "./roleHome";
 
 function HomeRedirect() {
   const { user, loading } = useAuth();
   if (loading) return <div className="page">Loading…</div>;
   if (!user) return <Navigate to="/login" replace />;
-  if (user.role === "batch_clerk") return <Navigate to="/batches" replace />;
-  return <Navigate to="/orders" replace />;
+  return <Navigate to={homeForRole(user.role)} replace />;
 }
 
 export default function App() {
@@ -36,6 +39,10 @@ export default function App() {
           <Route path="/batches/new" element={<BatchFormPage />} />
           <Route path="/batches/:id" element={<BatchFormPage />} />
           <Route path="/packaging" element={<PackagingInventoryPage />} />
+          <Route path="/dispatch" element={<DispatchOrdersPage />} />
+          <Route path="/dispatch/trips" element={<TripListPage />} />
+          <Route path="/dispatch/trips/new" element={<TripFormPage />} />
+          <Route path="/dispatch/trips/:id" element={<TripFormPage />} />
         </Route>
         <Route path="*" element={<HomeRedirect />} />
       </Routes>

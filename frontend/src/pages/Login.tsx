@@ -1,10 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth";
-
-function homeForRole(role: string) {
-  return role === "batch_clerk" ? "/batches" : "/orders";
-}
+import { homeForRole } from "../roleHome";
 
 export default function LoginPage() {
   const { user, loading, login } = useAuth();

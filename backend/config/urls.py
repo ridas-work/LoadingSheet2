@@ -9,4 +9,5 @@ urlpatterns = [
     path("api/market-visits/", include("market_visits.urls")),
     path("api/", include("batches.urls")),
     path("api/", include("packaging.urls")),
+    path("api/", include("dispatch.urls")),
 ]
