@@ -9,6 +9,7 @@ import OrderDetailPage from "./pages/OrderDetail";
 import OrdersListPage from "./pages/OrdersList";
 import BatchFormPage from "./pages/batches/BatchForm";
 import BatchListPage from "./pages/batches/BatchList";
+import PackagingInventoryPage from "./pages/packaging/PackagingInventory";
 
 function HomeRedirect() {
   const { user, loading } = useAuth();
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/batches" element={<BatchListPage />} />
           <Route path="/batches/new" element={<BatchFormPage />} />
           <Route path="/batches/:id" element={<BatchFormPage />} />
+          <Route path="/packaging" element={<PackagingInventoryPage />} />
         </Route>
         <Route path="*" element={<HomeRedirect />} />
       </Routes>

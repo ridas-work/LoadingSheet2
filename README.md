@@ -17,6 +17,7 @@ cd backend
 ..\.venv\Scripts\python manage.py seed_clerks
 ..\.venv\Scripts\python manage.py seed_catalog
 ..\.venv\Scripts\python manage.py seed_batch_products
+..\.venv\Scripts\python manage.py seed_packaging_materials
 ..\.venv\Scripts\python manage.py runserver
 ```
 
@@ -36,7 +37,7 @@ npm run dev
 | aslam    | Clerk123! | Orders + Market Visit |
 | nouman   | Clerk123! | Orders |
 | javeria  | Clerk123! | Orders |
-| esha     | Clerk123! | Batches (Active / New) |
+| esha     | Clerk123! | Batches + Packaging inventory |
 
 - API: `http://127.0.0.1:8000/api`
 - App: `http://127.0.0.1:5173`

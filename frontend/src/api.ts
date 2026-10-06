@@ -146,4 +146,44 @@ export const api = {
   deleteBatch(id: number) {
     return request<void>(`/batches/${id}/`, { method: "DELETE" });
   },
+  packagingMaterials(params?: { search?: string }) {
+    const q = new URLSearchParams();
+    if (params?.search) q.set("search", params.search);
+    const qs = q.toString();
+    return request<import("./types").PackagingMaterial[]>(
+      `/packaging-materials/${qs ? `?${qs}` : ""}`,
+    );
+  },
+  createPackagingMaterial(payload: {
+    name: string;
+    material_type?: string;
+    purchased_qty?: number;
+    rejected_qty?: number;
+  }) {
+    return request<import("./types").PackagingMaterial>(
+      "/packaging-materials/",
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+      },
+    );
+  },
+  updatePackagingMaterial(
+    id: number,
+    payload: {
+      name?: string;
+      code?: string;
+      purchased_qty?: number;
+      rejected_qty?: number;
+      material_type?: string;
+    },
+  ) {
+    return request<import("./types").PackagingMaterial>(
+      `/packaging-materials/${id}/`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(payload),
+      },
+    );
+  },
 };

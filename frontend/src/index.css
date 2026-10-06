@@ -742,6 +742,37 @@ select.yn-n {
   margin: 0 0 0.35rem;
 }
 
+.packaging-page .qty-input {
+  width: 6.5rem;
+  margin-top: 0;
+  padding: 0.45rem 0.55rem;
+}
+
+.packaging-page .code-under {
+  font-size: 0.78rem;
+  margin-top: 0.15rem;
+}
+
+.packaging-page .balance-cell {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.packaging-page .linkish {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--accent, #1d4ed8);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.packaging-page .linkish:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 720px) {
   .topbar {
     flex-wrap: wrap;

@@ -188,6 +188,32 @@ export interface BatchProduct {
   sort_order: number;
 }
 
+export type PackagingMaterialType =
+  | "bottle"
+  | "lid"
+  | "cap"
+  | "label"
+  | "box"
+  | "partition"
+  | "pouch"
+  | "sticker"
+  | "other";
+
+export interface PackagingMaterial {
+  id: number;
+  name: string;
+  code: string;
+  material_type: PackagingMaterialType | string;
+  purchased_qty: number;
+  rejected_qty: number;
+  uip_qty: number;
+  balance: number;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Batch {
   id: number;
   purpose: BatchPurpose;

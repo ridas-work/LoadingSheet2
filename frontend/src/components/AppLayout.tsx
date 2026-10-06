@@ -22,6 +22,7 @@ export default function AppLayout() {
             <>
               <Link to="/batches">Active batches</Link>
               <Link to="/batches/new">New batch</Link>
+              <Link to="/packaging">Packaging</Link>
             </>
           ) : (
             <>
