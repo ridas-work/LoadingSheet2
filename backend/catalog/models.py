@@ -32,6 +32,28 @@ class Product(models.Model):
         default=True,
         help_text="If true, product appears on the main loading sheet",
     )
+    batch_product = models.ForeignKey(
+        "batches.BatchProduct",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="catalog_products",
+        help_text="Parent brand for Esha batch assignment (Rashid portal).",
+    )
+    standard_carton_weight_kg = models.DecimalField(
+        max_digits=8,
+        decimal_places=3,
+        null=True,
+        blank=True,
+        help_text="Expected weight of one full carton (kg) for the ±8% check.",
+    )
+    fill_volume_liters = models.DecimalField(
+        max_digits=8,
+        decimal_places=3,
+        null=True,
+        blank=True,
+        help_text="Liters of liquid per bottle (null for powders / multi-brand bundles).",
+    )
     is_active = models.BooleanField(default=True)
     sort_order = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -41,6 +63,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+WEIGHT_TOLERANCE_PCT = 8
 
 
 class OuterBox(models.Model):

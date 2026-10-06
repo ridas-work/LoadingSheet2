@@ -207,4 +207,74 @@ export const api = {
       body: JSON.stringify(payload),
     });
   },
+  loadingPendingOrders() {
+    return request<import("./types").LoadingPendingOrder[]>(
+      "/loading/pending-orders/",
+    );
+  },
+  loadingTrips() {
+    return request<import("./types").LoadingTrip[]>("/loading/trips/");
+  },
+  loadingTrip(id: number) {
+    return request<import("./types").LoadingTrip>(`/loading/trips/${id}/`);
+  },
+  loadingSheet(tripId: number, orderId?: number) {
+    const q = orderId ? `?order_id=${orderId}` : "";
+    return request<import("./types").LoadingSheetResponse>(
+      `/loading/trips/${tripId}/sheet/${q}`,
+    );
+  },
+  saveLoadingSheet(
+    tripId: number,
+    lines: {
+      id: number;
+      ready_stock_lot_id: number | null;
+      source_batch_id: number | null;
+      carton_weight_kg: string | null;
+    }[],
+  ) {
+    return request<{ lines: import("./types").LoadingSheetLine[] }>(
+      `/loading/trips/${tripId}/sheet/`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ lines }),
+      },
+    );
+  },
+  deliverLoadingTrip(tripId: number) {
+    return request<{ id: number; status: string; vehicle_no: string }>(
+      `/loading/trips/${tripId}/deliver/`,
+      { method: "POST", body: JSON.stringify({}) },
+    );
+  },
+  readyStock(search?: string) {
+    const q = search ? `?search=${encodeURIComponent(search)}` : "";
+    return request<{
+      total_bottles: number;
+      lots: import("./types").ReadyStockLot[];
+    }>(`/loading/ready-stock/${q}`);
+  },
+  readyStockFormMeta() {
+    return request<{ products: import("./types").ReadyStockFormProduct[] }>(
+      "/loading/ready-stock/form-meta/",
+    );
+  },
+  addReadyStock(payload: unknown) {
+    return request<import("./types").ReadyStockLot[]>("/loading/ready-stock/", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+  patchReadyStock(
+    id: number,
+    payload: { on_hand?: number; batch_label?: string },
+  ) {
+    return request<import("./types").ReadyStockLot>(
+      `/loading/ready-stock/${id}/`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(payload),
+      },
+    );
+  },
 };

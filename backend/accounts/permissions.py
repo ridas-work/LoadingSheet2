@@ -50,3 +50,14 @@ class IsDispatchClerkOrAdmin(permissions.BasePermission):
             and request.user.is_authenticated
             and request.user.role in ("dispatch_clerk", "admin")
         )
+
+
+class IsLoadingClerkOrAdmin(permissions.BasePermission):
+    message = "Loading sheet portal access is restricted."
+
+    def has_permission(self, request, view):
+        return bool(
+            request.user
+            and request.user.is_authenticated
+            and request.user.role in ("loading_clerk", "admin")
+        )

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "batches",
     "packaging",
     "dispatch",
+    "loading",
 ]
 
 MIDDLEWARE = [

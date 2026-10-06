@@ -5,7 +5,7 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    help = "Seed portal users (order clerks, Esha, Ali)"
+    help = "Seed portal users (order clerks, Esha, Ali, Rashid)"
 
     def handle(self, *args, **options):
         # (username, first_name, password, role, can_market_visit)
@@ -16,6 +16,7 @@ class Command(BaseCommand):
             ("javeria", "Javeria", "Clerk123!", User.Role.ORDER_CLERK, False),
             ("esha", "Esha", "Clerk123!", User.Role.BATCH_CLERK, False),
             ("ali", "Ali", "Clerk123!", User.Role.DISPATCH_CLERK, False),
+            ("rashid", "Rashid", "Clerk123!", User.Role.LOADING_CLERK, False),
         ]
         for username, first_name, password, role, can_market_visit in users:
             user, created = User.objects.get_or_create(

@@ -8,10 +8,11 @@ PARENTS = [
     ("fabrito", "Fabrito", 3),
     ("degrease", "Degrease", 4),
     ("glim", "Glim", 5),
-    ("titan", "Titan", 6),
-    ("washout_lemon", "Washout Lemon", 7),
-    ("washout_floral", "Washout Floral", 8),
-    ("washout_ocean", "Washout Ocean", 9),
+    ("power_wash", "Power Wash", 6),
+    ("titan", "Titan", 7),
+    ("washout_lemon", "Washout Lemon", 8),
+    ("washout_floral", "Washout Floral", 9),
+    ("washout_ocean", "Washout Ocean", 10),
 ]
 
 

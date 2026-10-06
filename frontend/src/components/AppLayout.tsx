@@ -11,6 +11,7 @@ export default function AppLayout() {
   const home = homeForRole(user.role);
   const isBatchClerk = user.role === "batch_clerk";
   const isDispatchClerk = user.role === "dispatch_clerk";
+  const isLoadingClerk = user.role === "loading_clerk";
 
   return (
     <div className="app-shell">
@@ -33,7 +34,14 @@ export default function AppLayout() {
               <Link to="/dispatch/trips">Dispatch trips</Link>
             </>
           ) : null}
-          {!isBatchClerk && !isDispatchClerk ? (
+          {isLoadingClerk ? (
+            <>
+              <Link to="/loading">Trips &amp; batches</Link>
+              <Link to="/loading/pending">Pending POs</Link>
+              <Link to="/loading/ready-stock">Ready stock</Link>
+            </>
+          ) : null}
+          {!isBatchClerk && !isDispatchClerk && !isLoadingClerk ? (
             <>
               <Link to="/orders">Orders</Link>
               <Link to="/orders/new">New order</Link>

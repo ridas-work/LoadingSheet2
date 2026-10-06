@@ -1,4 +1,9 @@
-export type Role = "order_clerk" | "batch_clerk" | "dispatch_clerk" | "admin";
+export type Role =
+  | "order_clerk"
+  | "batch_clerk"
+  | "dispatch_clerk"
+  | "loading_clerk"
+  | "admin";
 
 export interface User {
   id: number;
@@ -266,6 +271,134 @@ export interface TripWritePayload {
   security: string;
   default_challan_no: string;
   orders: { order_id: number; challan_no: string }[];
+}
+
+export interface LoadingPendingOrder {
+  id: number;
+  po_number: string;
+  customer_name: string;
+  city: string;
+  deadline_date: string;
+  status: string;
+  created_by_username: string;
+  total_products: number;
+  total_bottles: number;
+  on_trip: boolean;
+  trip_id: number | null;
+  trip_vehicle_no: string;
+  trip_status: string | null;
+  challan_no: string;
+  created_at: string;
+}
+
+export interface LoadingTripOrderProgress {
+  order_id: number;
+  po_number: string;
+  customer_name: string;
+  city: string;
+  challan_no: string;
+  assigned_lines: number;
+  total_lines: number;
+}
+
+export interface LoadingTrip {
+  id: number;
+  vehicle_no: string;
+  driver_name: string;
+  helper_name?: string;
+  production_incharge?: string;
+  security?: string;
+  default_challan_no: string;
+  status: TripStatus;
+  po_numbers: string[];
+  order_count: number;
+  assigned_lines: number;
+  total_lines: number;
+  created_by_name: string;
+  updated_at: string;
+  created_at: string;
+  trip_orders?: LoadingTripOrderProgress[];
+}
+
+export interface ReadyStockBatchOption {
+  id: number;
+  batch_number: string;
+  batch_product_id: number;
+  remaining_quantity: string;
+  date: string;
+  product_id?: number;
+}
+
+export interface ReadyStockLot {
+  id: number;
+  product_id: number;
+  product_name: string;
+  batch_label: string;
+  source_batch_id?: number | null;
+  on_hand: number;
+  /** Bottles/sets reserved on planned trips (excl. current trip on sheet GET). */
+  assigned_bottles?: number;
+  /** on_hand − assigned (soft reserve; physical deduct is on deliver). */
+  available_to_assign?: number;
+  is_bundle?: boolean;
+  unit_label?: "sets" | "bottles";
+  updated_at: string;
+}
+
+export interface ReadyStockFormComponent {
+  product_id: number;
+  product_name: string;
+  qty_per_set: number;
+  fill_volume_liters: string | null;
+  available_batches: ReadyStockBatchOption[];
+}
+
+export interface ReadyStockFormProduct {
+  id: number;
+  name: string;
+  unit_label: string;
+  is_bundle: boolean;
+  fill_volume_liters: string | null;
+  available_batches: ReadyStockBatchOption[];
+  components: ReadyStockFormComponent[];
+}
+
+export interface LoadingSheetLine {
+  id: number;
+  order_id: number;
+  box_no: number;
+  product_id: number;
+  product_name: string;
+  bottles: number;
+  bottles_per_carton: number;
+  standard_weight_kg: string | null;
+  weight_tolerance_pct: number;
+  ready_stock_lot_id: number | null;
+  source_batch_id: number | null;
+  batch_label: string | null;
+  lot_on_hand: number | null;
+  batch_remaining_liters: string | null;
+  carton_weight_kg: string | null;
+  po_number: string;
+  customer_name: string;
+  challan_no: string;
+  sort_order: number;
+}
+
+export interface LoadingSheetResponse {
+  trip: {
+    id: number;
+    vehicle_no: string;
+    driver_name: string;
+    default_challan_no: string;
+    helper_name: string;
+    production_incharge: string;
+    security: string;
+    status: string;
+  };
+  lines: LoadingSheetLine[];
+  available_lots: ReadyStockLot[];
+  available_batches: ReadyStockBatchOption[];
 }
 
 export interface Batch {

@@ -16,10 +16,13 @@ class ProductAdmin(admin.ModelAdmin):
         "name",
         "bottles_per_carton",
         "unit_label",
+        "standard_carton_weight_kg",
+        "fill_volume_liters",
         "show_on_sheet",
         "is_active",
         "sort_order",
     )
+    list_editable = ("standard_carton_weight_kg", "fill_volume_liters")
     list_filter = ("is_active", "show_on_sheet", "unit_label")
     search_fields = ("name",)
 

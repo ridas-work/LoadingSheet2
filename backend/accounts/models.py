@@ -7,6 +7,7 @@ class User(AbstractUser):
         ORDER_CLERK = "order_clerk", "Order Clerk"
         BATCH_CLERK = "batch_clerk", "Batch Clerk"
         DISPATCH_CLERK = "dispatch_clerk", "Dispatch Clerk"
+        LOADING_CLERK = "loading_clerk", "Loading Clerk"
         ADMIN = "admin", "Admin"
 
     role = models.CharField(

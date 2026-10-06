@@ -1,6 +1,38 @@
+from decimal import Decimal
+from typing import Optional
+
 from django.core.management.base import BaseCommand
 
+from batches.models import BatchProduct
 from catalog.models import Customer, OuterBox, Product
+
+
+def batch_product_code_for(name: str) -> Optional[str]:
+    n = name.lower()
+    if n.startswith("rhino"):
+        return "rhino"
+    if n.startswith("brighten"):
+        return "brighten"
+    if n.startswith("fabrito"):
+        return "fabrito"
+    if n.startswith("degrease"):
+        return "degrease"
+    if n.startswith("glim"):
+        return "glim"
+    if n.startswith("power wash"):
+        return "power_wash"
+    if n.startswith("titan"):
+        return "titan"
+    if n.startswith("washout"):
+        if "floral" in n and "ocean" not in n and "lemon" not in n:
+            return "washout_floral"
+        if "lemon" in n and "floral" not in n and "ocean" not in n:
+            return "washout_lemon"
+        if "ocean" in n and "floral" not in n and "lemon" not in n:
+            return "washout_ocean"
+        # multi-scent B2G1 — no single parent
+        return None
+    return None
 
 
 # (name, units_per_carton, unit_label, sort_order)
@@ -39,6 +71,55 @@ SHEET_PRODUCTS = [
     ("Rhino 750 ml B2G1", 5, "bundles", 27),
 ]
 
+# Standard full-carton weight (kg) used for Rashid's ±8% check.
+STANDARD_CARTON_WEIGHT_KG = {
+    "Brighten Laundry Detergent (pouch)(1 litre)": "21.42",
+    "Brighten Liquid Laundry Detergent (1 litre)": "11.7",
+    "Brighten bottle B2G1": "15.567",
+    "Fabrito Fabric Softener (1 litre)": "11.05",
+    "Fabrito Fabric Softener (pouch)(1 litre)": "21.43",
+    "Fabrito bottle B2G1": "15.567",
+    "Degrease Spray 750ml": "8.75",
+    "Degrease 750 ml B2G1": "11.567",
+    "Glim 750ml": "8.75",
+    "Power Wash 500ml": "5.8",
+    "Power Wash 1 Litre (pouch)": "21.99",
+    "Power Wash 500ml B2G1": "7.867",
+    "Rhino 250ml": "5.234",
+    "Rhino 500ml": "17.4",
+    "Rhino 750ml": "9.17",
+    "Titan 500 g": "5.456",
+    "Titan 1.25 kg": "11.37",
+    "Washout Multi-surface Disinfectant Floral Red": "11.395",
+    "Washout Multi-surface Disinfectant Lemon Yellow": "11.395",
+    "Washout Multi-surface Disinfectant Ocean Blue": "11.395",
+    "Washout B2G1 (Floral + Ocean + Lemon)": "15.567",
+    "Brighten Laundry Detergent + Fabrito Fabric Softener bundle (1 litre each)": "11.22",
+    "Power Wash Dish Wash + Degrease Spray Bundle": "6.795",
+    "Rhino 2x2 750ml": "8.99",
+    # Rhino 250/500/750 ml B2G1: no standard weight given yet -> no check
+}
+
+# Liters of liquid per bottle. Bundle SKUs use component volumes via composition;
+# multi-brand bundles and Titan powder stay null (free-text fill only).
+FILL_VOLUME_LITERS = {
+    "Brighten Laundry Detergent (pouch)(1 litre)": "1.000",
+    "Brighten Liquid Laundry Detergent (1 litre)": "1.000",
+    "Fabrito Fabric Softener (1 litre)": "1.000",
+    "Fabrito Fabric Softener (pouch)(1 litre)": "1.000",
+    "Degrease Spray 750ml": "0.750",
+    "Glim 750ml": "0.750",
+    "Power Wash 500ml": "0.500",
+    "Power Wash 1 Litre (pouch)": "1.000",
+    "Rhino 250ml": "0.250",
+    "Rhino 500ml": "0.500",
+    "Rhino 750ml": "0.750",
+    "Washout Multi-surface Disinfectant Floral Red": "1.000",
+    "Washout Multi-surface Disinfectant Lemon Yellow": "1.000",
+    "Washout Multi-surface Disinfectant Ocean Blue": "1.000",
+    # Same-product B2G1 / Rhino 2x2: fill math uses component product volumes
+}
+
 
 class Command(BaseCommand):
     help = "Seed catalog: approved customers, sheet products, outer boxes"
@@ -55,9 +136,11 @@ class Command(BaseCommand):
                 defaults={"default_city": city, "is_approved": True},
             )
 
+        parents = {bp.code: bp for bp in BatchProduct.objects.all()}
         sheet_names = set()
         for name, units, unit_label, order in SHEET_PRODUCTS:
             sheet_names.add(name)
+            code = batch_product_code_for(name)
             Product.objects.update_or_create(
                 name=name,
                 defaults={
@@ -66,6 +149,17 @@ class Command(BaseCommand):
                     "show_on_sheet": True,
                     "is_active": True,
                     "sort_order": order,
+                    "batch_product": parents.get(code) if code else None,
+                    "standard_carton_weight_kg": (
+                        Decimal(STANDARD_CARTON_WEIGHT_KG[name])
+                        if name in STANDARD_CARTON_WEIGHT_KG
+                        else None
+                    ),
+                    "fill_volume_liters": (
+                        Decimal(FILL_VOLUME_LITERS[name])
+                        if name in FILL_VOLUME_LITERS
+                        else None
+                    ),
                 },
             )
 

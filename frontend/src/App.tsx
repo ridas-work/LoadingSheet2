@@ -13,6 +13,11 @@ import PackagingInventoryPage from "./pages/packaging/PackagingInventory";
 import DispatchOrdersPage from "./pages/dispatch/DispatchOrders";
 import TripFormPage from "./pages/dispatch/TripForm";
 import TripListPage from "./pages/dispatch/TripList";
+import LoadingSheetPage from "./pages/loading/LoadingSheet";
+import PendingOrdersPage from "./pages/loading/PendingOrders";
+import ReadyStockPage from "./pages/loading/ReadyStock";
+import LoadingTripDetailPage from "./pages/loading/TripDetail";
+import LoadingTripListPage from "./pages/loading/TripList";
 import { homeForRole } from "./roleHome";
 
 function HomeRedirect() {
@@ -43,6 +48,14 @@ export default function App() {
           <Route path="/dispatch/trips" element={<TripListPage />} />
           <Route path="/dispatch/trips/new" element={<TripFormPage />} />
           <Route path="/dispatch/trips/:id" element={<TripFormPage />} />
+          <Route path="/loading" element={<LoadingTripListPage />} />
+          <Route path="/loading/pending" element={<PendingOrdersPage />} />
+          <Route path="/loading/ready-stock" element={<ReadyStockPage />} />
+          <Route path="/loading/trips/:id" element={<LoadingTripDetailPage />} />
+          <Route
+            path="/loading/trips/:id/sheet"
+            element={<LoadingSheetPage />}
+          />
         </Route>
         <Route path="*" element={<HomeRedirect />} />
       </Routes>
